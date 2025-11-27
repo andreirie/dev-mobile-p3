@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:apk_p3/service/horse_service.dart';
 import 'package:apk_p3/model/horse_model.dart';
+import 'package:apk_p3/view/components/my_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -208,10 +209,10 @@ class _HorsePageState extends State<HorsePage> {
                     ),
                   ),
                 ),
-                _buildInfoCard(
+                InfoCardSection(
                   title: "Informações Básicas",
                   children: [
-                    _buildTextFormField(
+                    CustomTextFormField(
                       controller: _nameController,
                       labelText: "Nome",
                       updateAppBar: true,
@@ -236,7 +237,7 @@ class _HorsePageState extends State<HorsePage> {
                     Row(
                       children: [
                         Expanded(
-                          child: _buildTextFormField(
+                          child: CustomTextFormField(
                             controller: _ageController,
                             labelText: "Idade",
                             keyboardType: TextInputType.number,
@@ -259,7 +260,7 @@ class _HorsePageState extends State<HorsePage> {
                         ),
                         SizedBox(width: 16.0),
                         Expanded(
-                          child: _buildDropdownFormField(
+                          child: CustomDropdownFormField(
                             labelText: "Gênero",
                             options: ["Macho", "Fêmea"],
                             currentValue: _editHorse?.gender,
@@ -276,7 +277,7 @@ class _HorsePageState extends State<HorsePage> {
                       ],
                     ),
                     SizedBox(height: 12.0),
-                    _buildDropdownFormField(
+                    CustomDropdownFormField(
                       labelText: "Cor da Pelagem",
                       options: [
                         "Castanho",
@@ -299,13 +300,13 @@ class _HorsePageState extends State<HorsePage> {
                   ],
                 ),
                 SizedBox(height: 16.0),
-                _buildInfoCard(
+                InfoCardSection(
                   title: "Estatísticas de Corrida",
                   children: [
                     Row(
                       children: [
                         Expanded(
-                          child: _buildTextFormField(
+                          child: CustomTextFormField(
                             controller: _totalRacesController,
                             labelText: "Total de Corridas",
                             keyboardType: TextInputType.number,
@@ -327,7 +328,7 @@ class _HorsePageState extends State<HorsePage> {
                         ),
                         SizedBox(width: 16.0),
                         Expanded(
-                          child: _buildTextFormField(
+                          child: CustomTextFormField(
                             controller: _totalWinsController,
                             labelText: "Total de Vitórias",
                             keyboardType: TextInputType.number,
@@ -350,7 +351,7 @@ class _HorsePageState extends State<HorsePage> {
                       ],
                     ),
                     SizedBox(height: 12.0),
-                    _buildDateFormField(
+                    DateTextFormField(
                       labelText: "Data da Última Vitória",
                       controller: _lastVictoryDateController,
                       onTap: () => _selectDate(context),
@@ -384,125 +385,6 @@ class _HorsePageState extends State<HorsePage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildInfoCard({
-    required String title,
-    required List<Widget> children,
-  }) {
-    return Card(
-      elevation: 4.0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      margin: EdgeInsets.symmetric(vertical: 8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.brown,
-              ),
-            ),
-            Divider(color: Colors.grey[300]),
-            ...children,
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextFormField({
-    required TextEditingController controller,
-    required String labelText,
-    required Function(String) onChanged,
-    TextInputType keyboardType = TextInputType.text,
-    List<TextInputFormatter>? inputFormatters,
-    String? Function(String?)? validator,
-    bool updateAppBar = false,
-  }) {
-    return TextFormField(
-      controller: controller,
-      style: TextStyle(fontWeight: FontWeight.bold),
-      decoration: InputDecoration(
-        labelText: labelText,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0),
-      ),
-      onChanged: (text) {
-        onChanged(text);
-        if (updateAppBar) {
-          setState(() {});
-        }
-      },
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatters,
-      validator: validator,
-    );
-  }
-
-  Widget _buildDateFormField({
-    required String labelText,
-    required TextEditingController controller,
-    required VoidCallback onTap,
-  }) {
-    return TextFormField(
-      controller: controller,
-      readOnly: true,
-      style: TextStyle(fontWeight: FontWeight.bold),
-      decoration: InputDecoration(
-        labelText: labelText,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0),
-        suffixIcon: Icon(Icons.calendar_today, color: Colors.brown),
-      ),
-      onTap: onTap,
-    );
-  }
-
-  Widget _buildDropdownFormField({
-    required String labelText,
-    required List<String> options,
-    required String? currentValue,
-    required void Function(String?) onChanged,
-  }) {
-    String? valueToUse = options.contains(currentValue) ? currentValue : null;
-
-    List<DropdownMenuItem<String>> dropdownItems = options.map((String option) {
-      return DropdownMenuItem<String>(value: option, child: Text(option));
-    }).toList();
-
-    dropdownItems.insert(
-      0,
-      const DropdownMenuItem<String>(value: null, child: Text("-")),
-    );
-
-    valueToUse = currentValue == null || !options.contains(currentValue)
-        ? null
-        : currentValue;
-
-    return DropdownButtonFormField<String>(
-      value: valueToUse,
-      dropdownColor: Colors.brown[50],
-      decoration: InputDecoration(
-        labelText: labelText,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-        contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0),
-      ),
-      hint: const Text("Selecione"),
-      items: dropdownItems,
-      onChanged: onChanged,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Obrigatório!';
-        }
-        return null;
-      },
     );
   }
 
