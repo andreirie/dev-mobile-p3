@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "642515956336",
+    "project_id": "catalogo-cavalos-b27a1",
+    "storage_bucket": "catalogo-cavalos-b27a1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642515956336:android:d02744d433d85f394b7ab5",
+        "android_client_info": {
+          "package_name": "com.example.apk_p3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBwtin5D_FAmGOtMSQ68QfUnF7v2fw7z8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
